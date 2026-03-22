@@ -212,14 +212,7 @@ const BookingRow = ({ booking, index, isInView }) => {
       </div>
 
       {/* Hover arrow */}
-      <motion.span
-        animate={{ x: hovered ? 5 : 0, opacity: hovered ? 1 : 0.3 }}
-        transition={{ duration: 0.25 }}
-        className="flex-shrink-0 text-lg font-bold"
-        style={{ color: C.mediumGreen }}
-      >
-        →
-      </motion.span>
+     
     </motion.div>
   );
 };
@@ -250,7 +243,7 @@ const CtaStrip = ({ isInView }) => (
         transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
         className="text-5xl mb-3 select-none"
       >
-        🌿
+        🍓
       </motion.div>
       <p className="text-[11px] font-bold tracking-[0.22em] uppercase mb-1"
         style={{ fontFamily: "'Nunito', sans-serif", color: C.limeGreen }}>

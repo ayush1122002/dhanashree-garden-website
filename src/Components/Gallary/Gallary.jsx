@@ -27,7 +27,7 @@ import img22 from "../../assets/Gallary/img22.webp";
 import img23 from "../../assets/Gallary/img23.webp";
 import img24 from "../../assets/Gallary/img24.webp";
 
-// ─── Brand Palette (identical to Services) ────────────────────────────────────
+// ─── Brand Palette ────────────────────────────────────────────────────────────
 const C = {
   primaryGreen: "#0E7909",
   mediumGreen:  "#5FA800",
@@ -75,7 +75,7 @@ let _lockCount = 0;
 const lockScroll   = () => { if (++_lockCount === 1) document.body.style.overflow = "hidden"; };
 const unlockScroll = () => { _lockCount = Math.max(0, _lockCount - 1); if (_lockCount === 0) document.body.style.overflow = ""; };
 
-// ─── Blobs (same as Services) ─────────────────────────────────────────────────
+// ─── Blobs ────────────────────────────────────────────────────────────────────
 const Blobs = () => (
   <div aria-hidden="true" style={{ pointerEvents: "none", position: "absolute", inset: 0, overflow: "hidden" }}>
     <motion.div
@@ -157,7 +157,6 @@ const SectionHeader = ({ isInView }) => (
       </em>
     </motion.h2>
 
-    {/* Yellow divider + leaf — same as Services */}
     <motion.div
       initial={{ opacity: 0 }}
       animate={isInView ? { opacity: 1 } : {}}
@@ -186,8 +185,8 @@ const StatsStrip = ({ isInView }) => {
   const stats = [
     { num: "100+", label: "Photographs" },
     { num: "5★",   label: "Experiences" },
-    { num: "5★",  label: "Guest Rating" },
-    { num: "∞",   label: "Memories" },
+    { num: "5★",   label: "Guest Rating" },
+    { num: "∞",    label: "Memories"     },
   ];
   return (
     <motion.div
@@ -265,7 +264,6 @@ const FeaturedVideo = ({ isInView }) => (
       <span style={{ fontFamily: "'Nunito', sans-serif", fontSize: 13, color: C.textMuted, fontWeight: 500 }}>
         🎬 A day at Dhanashree Garden, Mahabaleshwar
       </span>
-      
     </div>
   </motion.div>
 );
@@ -302,7 +300,6 @@ const PhotoCard = ({ src, index, onClick, isInView }) => {
         />
       </div>
 
-      {/* Caption */}
       <div style={{
         position: "absolute", bottom: 0, left: 0, right: 0,
         height: 36, display: "flex", alignItems: "center", justifyContent: "center",
@@ -312,7 +309,6 @@ const PhotoCard = ({ src, index, onClick, isInView }) => {
         </span>
       </div>
 
-      {/* Hover tint */}
       <AnimatePresence>
         {hovered && (
           <motion.div
@@ -326,7 +322,6 @@ const PhotoCard = ({ src, index, onClick, isInView }) => {
         )}
       </AnimatePresence>
 
-      {/* Number */}
       <div style={{
         position: "absolute", top: 14, right: 14,
         fontFamily: "'Nunito', sans-serif", fontSize: 9, fontWeight: 700,
@@ -363,9 +358,9 @@ const FilmStrip = ({ photos, startIndex, onOpen, isInView, label, autoDir = 1 })
   const touchStart  = useRef(0);
   const touchScroll = useRef(0);
 
-  const onMouseDown = (e) => { setIsDragging(true); dragStart.current = { x: e.clientX, scroll: stripRef.current.scrollLeft }; };
-  const onMouseMove = (e) => { if (!isDragging) return; stripRef.current.scrollLeft = dragStart.current.scroll - (e.clientX - dragStart.current.x); };
-  const onMouseUp   = () => setIsDragging(false);
+  const onMouseDown  = (e) => { setIsDragging(true); dragStart.current = { x: e.clientX, scroll: stripRef.current.scrollLeft }; };
+  const onMouseMove  = (e) => { if (!isDragging) return; stripRef.current.scrollLeft = dragStart.current.scroll - (e.clientX - dragStart.current.x); };
+  const onMouseUp    = () => setIsDragging(false);
   const onTouchStart = (e) => { touchStart.current = e.touches[0].clientX; touchScroll.current = stripRef.current.scrollLeft; };
   const onTouchMove  = (e) => { stripRef.current.scrollLeft = touchScroll.current - (e.touches[0].clientX - touchStart.current); };
 
@@ -432,8 +427,8 @@ const FilmStrip = ({ photos, startIndex, onOpen, isInView, label, autoDir = 1 })
   );
 };
 
-// ─── Lightbox ─────────────────────────────────────────────────────────────────
-const Lightbox = ({ index, onClose, onPrev, onNext }) => {
+// ─── Lightbox — FIXED: onSelect prop added, thumbnails now navigate ───────────
+const Lightbox = ({ index, onClose, onPrev, onNext, onSelect }) => {
   const src      = ALL_IMAGES[index];
   const total    = ALL_IMAGES.length;
   const progress = ((index + 1) / total) * 100;
@@ -557,7 +552,7 @@ const Lightbox = ({ index, onClose, onPrev, onNext }) => {
         style={{ ...navBtn, position: "fixed", right: 14, top: "50%", transform: "translateY(-50%)", zIndex: 10, width: 46, height: 78, borderRadius: 12, fontSize: 24 }}
       >›</motion.button>
 
-      {/* Thumbnail strip */}
+      {/* Thumbnail strip — FIXED: onClick now calls onSelect(i) to navigate */}
       <div
         onClick={e => e.stopPropagation()}
         style={{
@@ -569,15 +564,18 @@ const Lightbox = ({ index, onClose, onPrev, onNext }) => {
         }}
       >
         {ALL_IMAGES.map((thumb, i) => (
-          <motion.button key={i} whileHover={{ scale: 1.15, y: -4 }}
-            onClick={(e) => e.stopPropagation()}
+          <motion.button
+            key={i}
+            whileHover={{ scale: 1.15, y: -4 }}
+            onClick={(e) => { e.stopPropagation(); onSelect(i); }}
             style={{
               flexShrink: 0, width: i === index ? 52 : 36, height: i === index ? 40 : 28,
               padding: 0, border: "none", cursor: "pointer", borderRadius: 3, overflow: "hidden",
               outline: i === index ? `2.5px solid ${C.yellow}` : `1px solid ${C.limeGreen}55`,
               outlineOffset: i === index ? 2 : 0, opacity: i === index ? 1 : 0.5,
               transition: "all 0.25s ease", background: "none",
-            }}>
+            }}
+          >
             <img src={thumb} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
           </motion.button>
         ))}
@@ -592,10 +590,11 @@ export default function Gallery() {
   const sectionRef = useRef(null);
   const isInView   = useInView(sectionRef, { once: true, margin: "-80px" });
 
-  const openImage  = useCallback((i) => { setLightboxIndex(i); lockScroll(); }, []);
-  const closeImage = useCallback(() => { setLightboxIndex(null); unlockScroll(); }, []);
-  const goPrev     = useCallback(() => setLightboxIndex(p => (p - 1 + ALL_IMAGES.length) % ALL_IMAGES.length), []);
-  const goNext     = useCallback(() => setLightboxIndex(p => (p + 1) % ALL_IMAGES.length), []);
+  const openImage   = useCallback((i) => { setLightboxIndex(i); lockScroll(); }, []);
+  const closeImage  = useCallback(() => { setLightboxIndex(null); unlockScroll(); }, []);
+  const goPrev      = useCallback(() => setLightboxIndex(p => (p - 1 + ALL_IMAGES.length) % ALL_IMAGES.length), []);
+  const goNext      = useCallback(() => setLightboxIndex(p => (p + 1) % ALL_IMAGES.length), []);
+  const selectImage = useCallback((i) => setLightboxIndex(i), []);
 
   useEffect(() => {
     const handler = (e) => {
@@ -629,7 +628,6 @@ export default function Gallery() {
       >
         <Blobs />
 
-        {/* Dot grid — matches Services */}
         <div aria-hidden="true" style={{
           position: "absolute", inset: 0, pointerEvents: "none",
           backgroundImage: `radial-gradient(circle, ${C.lightGreen}55 1px, transparent 1px)`,
@@ -644,14 +642,13 @@ export default function Gallery() {
 
         <div style={{ position: "relative", zIndex: 1 }}>
           <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px", marginBottom: 36 }}>
-            <FilmStrip photos={ALL_IMAGES.slice(0, 12)} startIndex={0} onOpen={openImage} isInView={isInView} label="Series I — The Fields" autoDir={1} />
+            <FilmStrip photos={ALL_IMAGES.slice(0, 12)}  startIndex={0}  onOpen={openImage} isInView={isInView} label="Series I — The Fields"  autoDir={1}  />
           </div>
           <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px" }}>
             <FilmStrip photos={ALL_IMAGES.slice(12, 24)} startIndex={12} onOpen={openImage} isInView={isInView} label="Series II — Farm Life" autoDir={-1} />
           </div>
         </div>
 
-        {/* Footer rule */}
         <motion.div
           initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ duration: 1, delay: 0.5 }}
           style={{
@@ -674,7 +671,13 @@ export default function Gallery() {
 
       <AnimatePresence>
         {lightboxIndex !== null && (
-          <Lightbox index={lightboxIndex} onClose={closeImage} onPrev={goPrev} onNext={goNext} />
+          <Lightbox
+            index={lightboxIndex}
+            onClose={closeImage}
+            onPrev={goPrev}
+            onNext={goNext}
+            onSelect={selectImage}
+          />
         )}
       </AnimatePresence>
     </>

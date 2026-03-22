@@ -474,89 +474,81 @@ const BottomCTA = () => {
   return (
     <div
       ref={ref}
-      className="relative overflow-hidden py-24 px-6 sm:px-12 flex flex-col items-center justify-center text-center"
-      style={{ background: `linear-gradient(135deg, ${C.brandDark} 0%, ${C.primaryGreen} 55%, ${C.mediumGreen} 100%)`, minHeight: "60vh" }}
+      className="px-4 sm:px-6 lg:px-10 xl:px-16 py-16 sm:py-24"
+      style={{
+        background: `linear-gradient(150deg, #f2fae8 0%, #eef7df 30%, #f8fde8 65%, #f0f9e0 100%)`,
+      }}
     >
-      <div aria-hidden="true" className="absolute -top-24 -right-24 w-80 h-80 rounded-full pointer-events-none"
-        style={{ background: `radial-gradient(circle, ${C.yellow}28, transparent 70%)` }} />
-      <div aria-hidden="true" className="absolute -bottom-20 -left-20 w-64 h-64 rounded-full pointer-events-none"
-        style={{ background: `radial-gradient(circle, ${C.limeGreen}28, transparent 70%)` }} />
-
       <motion.div
-        animate={{ y: [0, -14, 0], rotate: [0, 8, -5, 0] }}
-        transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-        className="text-6xl mb-8 select-none relative z-10"
-        aria-hidden="true"
+        initial={{ opacity: 0, y: 50 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.85, ease: EASE_EXPO }}
+        className="relative max-w-7xl mx-auto rounded-[32px] overflow-hidden p-10 sm:p-14 flex flex-col sm:flex-row items-center justify-between gap-8"
+        style={{
+          background: `linear-gradient(130deg, ${C.brandDark} 0%, ${C.primaryGreen} 55%, ${C.mediumGreen} 100%)`,
+          boxShadow: `0 12px 50px ${C.brandDark}45, 0 0 0 1px ${C.mediumGreen}40`,
+        }}
       >
-        🍓
-      </motion.div>
+        {/* Decorative blobs */}
+        <div aria-hidden="true" className="absolute -right-16 -top-16 w-56 h-56 rounded-full pointer-events-none"
+          style={{ background: `radial-gradient(circle, ${C.yellow}35, transparent 70%)` }} />
+        <div aria-hidden="true" className="absolute -left-10 -bottom-10 w-44 h-44 rounded-full pointer-events-none"
+          style={{ background: `radial-gradient(circle, ${C.limeGreen}35, transparent 70%)` }} />
 
-      <motion.p
-        initial={{ opacity: 0, y: 16 }} animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, ease: EASE_EXPO }}
-        className="text-[11px] font-bold tracking-[0.26em] uppercase mb-4 relative z-10"
-        style={{ fontFamily: "'Nunito', sans-serif", color: C.limeGreen }}
-      >
-        Plan Your Visit
-      </motion.p>
+        {/* Left text */}
+        <div className="relative z-10 text-center sm:text-left">
+          <motion.div
+            aria-hidden="true"
+            animate={{ y: [0, -8, 0], rotate: [0, 8, -4, 0] }}
+            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+            className="text-5xl mb-3 select-none"
+          >
+            🍓
+          </motion.div>
+          <p className="text-[11px] font-bold tracking-[0.22em] uppercase mb-1"
+            style={{ fontFamily: "'Nunito', sans-serif", color: C.limeGreen }}>
+            Plan Your Visit
+          </p>
+          <h3 className="text-2xl sm:text-3xl font-bold mb-2"
+            style={{ fontFamily: "'Cormorant Garamond', serif", color: C.white }}>
+            Come Taste the Farm.{" "}
+            <em style={{ fontStyle: "italic", color: C.limeGreen }}>Mahabaleshwar Awaits.</em>
+          </h3>
+          <p className="text-sm max-w-sm"
+            style={{ fontFamily: "'Nunito', sans-serif", color: "rgba(255,255,255,0.72)" }}>
+            Experience the magic of Mahabaleshwar's finest organic strawberry farm.
+            Open daily during harvest season.
+          </p>
+        </div>
 
-      <motion.h2
-        initial={{ opacity: 0, y: 40 }} animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8, delay: 0.1, ease: EASE_EXPO }}
-        className="font-bold leading-tight mb-4 relative z-10"
-        style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(2.4rem, 5vw, 4.5rem)", color: C.white }}
-      >
-        Come Taste the Farm.
-        <br /><em style={{ fontStyle: "italic", color: C.limeGreen }}>Mahabaleshwar Awaits.</em>
-      </motion.h2>
+        {/* Right buttons */}
+        <div className="flex flex-col sm:flex-row gap-3 relative z-10 flex-shrink-0 w-full sm:w-auto">
+          <motion.a
+            href={WHATSAPP_URL} target="_blank" rel="noreferrer"
+            whileHover={{ scale: 1.06, boxShadow: `0 14px 40px ${C.yellow}55` }}
+            whileTap={{ scale: 0.97 }}
+            className="flex items-center justify-center gap-2 px-9 py-4 rounded-2xl text-sm font-bold w-full sm:w-auto"
+            style={{ fontFamily: "'Nunito', sans-serif", background: C.yellow, color: C.brandDark, boxShadow: `0 6px 22px ${C.yellow}44`, textDecoration: "none" }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill={C.brandDark} aria-hidden="true">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            Book a Visit →
+          </motion.a>
 
-      <motion.div
-        initial={{ scaleX: 0 }} animate={isInView ? { scaleX: 1 } : {}}
-        transition={{ duration: 0.8, delay: 0.3, ease: EASE_EXPO }}
-        className="h-px w-20 mb-6 origin-center relative z-10"
-        style={{ background: `linear-gradient(90deg, transparent, ${C.yellow}, transparent)` }}
-      />
-
-      <motion.p
-        initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.65, delay: 0.3, ease: EASE_EXPO }}
-        className="text-base sm:text-lg max-w-md mx-auto leading-relaxed mb-10 relative z-10"
-        style={{ fontFamily: "'Nunito', sans-serif", color: "rgba(255,255,255,0.72)" }}
-      >
-        Experience the magic of Mahabaleshwar's finest organic strawberry farm.
-        Open daily during harvest season.
-      </motion.p>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.65, delay: 0.45, ease: EASE_EXPO }}
-        className="flex flex-col sm:flex-row gap-4 justify-center relative z-10"
-      >
-        {/* WhatsApp */}
-        <motion.a
-          href={WHATSAPP_URL} target="_blank" rel="noreferrer"
-          whileHover={{ scale: 1.06, boxShadow: `0 14px 40px ${C.yellow}55` }} whileTap={{ scale: 0.97 }}
-          className="flex items-center justify-center gap-2.5 px-10 py-4 rounded-2xl text-sm font-bold"
-          style={{ fontFamily: "'Nunito', sans-serif", background: C.yellow, color: C.brandDark, textDecoration: "none", boxShadow: `0 6px 22px ${C.yellow}44` }}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill={C.brandDark} aria-hidden="true" style={{ flexShrink: 0 }}>
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-          </svg>
-          Book a Visit →
-        </motion.a>
-
-        {/* Phone */}
-        <motion.a
-          href={PHONE_URL}
-          whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
-          className="flex items-center justify-center gap-2.5 px-10 py-4 rounded-2xl text-sm font-bold border"
-          style={{ fontFamily: "'Nunito', sans-serif", background: "rgba(255,255,255,0.1)", backdropFilter: "blur(12px)", borderColor: "rgba(255,255,255,0.28)", color: C.white, textDecoration: "none" }}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}>
-            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/>
-          </svg>
-          Contact Us
-        </motion.a>
+          <motion.a
+            href={PHONE_URL}
+            whileHover={{ scale: 1.05, boxShadow: `0 12px 32px ${C.white}25` }}
+            whileTap={{ scale: 0.97 }}
+            className="flex items-center justify-center gap-2 px-9 py-4 rounded-2xl text-sm font-bold border w-full sm:w-auto"
+            style={{ fontFamily: "'Nunito', sans-serif", background: "rgba(255,255,255,0.12)", backdropFilter: "blur(12px)", borderColor: "rgba(255,255,255,0.3)", color: C.white, textDecoration: "none" }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/>
+            </svg>
+            Contact Us
+          </motion.a>
+        </div>
       </motion.div>
     </div>
   );
