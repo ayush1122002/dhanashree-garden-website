@@ -27,14 +27,15 @@ const WHATSAPP_URL = "https://wa.me/919075481074";
 
 // ─── Nav items ───────────────────────────────────────────────────────────────
 const navItems = [
-  { label: "Home",         path: "/"                     },
-  { label: "About",        path: "/aboutus"              },
-  { label: "Products",     path: "/products"             },
-  { label: "Services",     path: "/services"             },
-  { label: "Gallery",      path: "/gallery"              },
-  { label: "Testimonials", path: "/written-testimonials" },
-  { label: "FAQ",          path: "/faq"                  },
-  { label: "Contact Us",   path: "/contact"              },
+  { label: "Home",           path: "/"                     },
+  { label: "About",          path: "/aboutus"              },
+  { label: "Products",       path: "/products"             },
+  { label: "Services",       path: "/services"             },
+  { label: "Group Bookings", path: "/group-bookings"       },
+  { label: "Gallery",        path: "/gallery"              },
+  { label: "Testimonials",   path: "/written-testimonials" },
+  { label: "FAQ",            path: "/faq"                  },
+  { label: "Contact Us",     path: "/contact"              },
 ];
 
 // ─── Desktop Nav Link ────────────────────────────────────────────────────────
