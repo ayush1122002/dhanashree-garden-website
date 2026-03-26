@@ -5,46 +5,56 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout main branch
+      - name: Checkout source
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build Vite app
         run: npm run build
 
-      - name: Deploy dist to release branch
+      - name: Add cPanel deployment file
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          cat > dist/.cpanel.yml << 'EOF'
+          ---
+          deployment:
+            tasks:
+              - export DEPLOYPATH=/home/dhanashr/public_html/
+              - /bin/cp -R . $DEPLOYPATH
+          EOF
 
-          # Clone release branch into temp folder
-          git clone --branch release https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} release-branch || git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} release-branch
+      - name: Add SPA fallback
+        run: cp dist/index.html dist/404.html || true
 
-          cd release-branch
+      - name: Add .htaccess for React Router
+        run: |
+          cat > dist/.htaccess << 'EOF'
+          RewriteEngine On
+          RewriteBase /
+          RewriteRule ^index\.html$ - [L]
+          RewriteCond %{REQUEST_FILENAME} !-f
+          RewriteCond %{REQUEST_FILENAME} !-d
+          RewriteRule . /index.html [L]
+          EOF
 
-          # Remove old files except .git
-          find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
-
-          # Copy fresh build files
-          cp -r ../dist/* .
-
-          # Optional: for SPA routing support
-          cp index.html 404.html || true
-
-          git add .
-          git commit -m "Auto deploy from main [skip ci]" || echo "No changes to commit"
-          git push origin release --force
+      - name: Push dist to release branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: release
+          publish_dir: ./dist
